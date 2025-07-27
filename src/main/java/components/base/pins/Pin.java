@@ -1,6 +1,7 @@
 package components.base.pins;
 
 import com.pi4j.context.Context;
+import com.pi4j.exception.ShutdownException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,25 +14,21 @@ import static components.base.pins.Pin.PinType.*;
 @SuppressWarnings("unused")
 public abstract class Pin {
 
-    protected abstract Context getContext();
-
     private static final Set<PinIdentifier> activePins = new HashSet<>();
 
+    protected final Context pi4j;
     protected final PinIdentifier identifier;
 
-    public Pin() throws IllegalAccessException {
-        throw new IllegalAccessException("Cannot instantiate Pin object by itself. A Pin Object must be accompanied by a pin type.");
-    }
-
-    protected Pin(@NotNull final PinIdentifier pin) throws IllegalStateException, IllegalArgumentException {
+    protected Pin(@NotNull final Context pi4j, @NotNull final PinIdentifier pin) throws IllegalStateException, IllegalArgumentException {
         if (!isPinAvailable(pin)) throw new IllegalStateException("Failed to initiate Pin %d. Pin is already in use!".formatted(pin.pin));
-        if (!isPinLegal(pin)) throw new IllegalArgumentException("Failed to initiate Pin %d. Pin is not configurable!");
+        else if (!isPinLegal(pin)) throw new IllegalArgumentException("Failed to initiate Pin %d. Pin is not configurable!".formatted(pin.pin));
+        this.pi4j = pi4j;
         this.identifier = pin;
         activePins.add(this.identifier);
     }
 
-    protected void destroy(@NotNull final Pin instance) {
-        //instance.getContext().destroy()
+    protected void destroy(@NotNull final Pin instance) throws ShutdownException {
+        instance.pi4j.shutdown();
         activePins.remove(instance.identifier);
     }
 
