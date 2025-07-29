@@ -6,6 +6,7 @@ import com.pi4j.io.gpio.digital.DigitalOutput;
 import com.pi4j.io.gpio.digital.DigitalOutputConfig;
 import com.pi4j.io.gpio.digital.DigitalState;
 import components.base.pins.Pin;
+import components.base.pins.components.PinIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")

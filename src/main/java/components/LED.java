@@ -2,8 +2,9 @@ package components;
 
 import com.pi4j.context.Context;
 import components.base.Component;
-import components.base.pins.Pin;
+import components.base.pins.components.PinIdentifier;
 import components.base.pins.digital.DigitalOutputPin;
+import components.servo.Servo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
@@ -13,11 +14,12 @@ public class LED extends Component {
 
     private final DigitalOutputPin pin;
 
-    public LED(@NotNull final Context pi4j, @NotNull final Pin.PinIdentifier pin) {
+    public LED(@NotNull final Context pi4j, @NotNull final PinIdentifier pin) {
         this(pi4j,pin,false);
+        Servo.builder(pi4j, Servo.Driver.NO_DRIVER)
     }
 
-    public LED(@NotNull final Context pi4j, @NotNull final Pin.PinIdentifier pin, final boolean alwaysOn) {
+    public LED(@NotNull final Context pi4j, @NotNull final PinIdentifier pin, final boolean alwaysOn) {
         super(pi4j);
         this.pin = new DigitalOutputPin(pi4j,pin,alwaysOn);
     }

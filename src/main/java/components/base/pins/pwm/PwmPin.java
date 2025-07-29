@@ -5,6 +5,8 @@ import com.pi4j.io.pwm.Pwm;
 import com.pi4j.io.pwm.PwmPreset;
 import com.pi4j.io.pwm.PwmType;
 import components.base.pins.Pin;
+import components.base.pins.components.GpioType;
+import components.base.pins.components.PinIdentifier;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
@@ -85,7 +87,7 @@ public class PwmPin extends Pin {
     }
 
     /**
-     * Get the current frequceny set.
+     * Get the current frequency set.
      * @return The current frequency. This might not reflect the actual live frequency,
      * but rather the latest frequency set by the user.
      */

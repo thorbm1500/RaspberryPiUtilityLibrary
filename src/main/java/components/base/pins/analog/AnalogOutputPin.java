@@ -4,6 +4,7 @@ import com.pi4j.context.Context;
 import com.pi4j.io.gpio.analog.AnalogOutput;
 import com.pi4j.io.gpio.analog.AnalogOutputConfig;
 import components.base.pins.Pin;
+import components.base.pins.components.PinIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -157,6 +158,18 @@ public class AnalogOutputPin extends Pin {
      * @param value The pin's new value.
      */
     public void set(final int value) {
+        set(value,false);
+    }
+
+    /**
+     * Sets the pin's current value to the specified value.
+     * The value passed to this method will be forced within
+     * the minimum and maximum values defined.
+     * @param value The pin's new value.
+     * @param ignoreLimit True if the max limit should be ignored, otherwise false.<br>Default: <code><b>False</b></code>
+     */
+    public void set(final int value, final boolean ignoreLimit) {
+        if (ignoreLimit) pin.setValue(Math.clamp(value,AnalogOutputPin.defaultMinimumValue, externalDac?AnalogOutputPin.defaultTwelveBitMaximumValue:AnalogOutputPin.defaultMaximumValue));
         pin.setValue(Math.clamp(value,minimumValue,maximumValue));
     }
 }
